@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5175',
+  baseURL: import.meta.env.VITE_API_URL || 'https://stock-flow-management-system.onrender.com/api',
   timeout: 10000,
 });
 
