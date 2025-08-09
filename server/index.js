@@ -35,10 +35,7 @@ app.use("/api/order", orderRoutes);
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("✅ MongoDB connected");
     app.listen(PORT, () => {
