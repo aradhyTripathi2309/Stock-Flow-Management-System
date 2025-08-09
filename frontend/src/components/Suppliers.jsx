@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const Suppliers = () => {
   const [showModel, setShowModel] = useState(false);
@@ -22,11 +22,7 @@ const Suppliers = () => {
   const fetchSuppliers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5175/api/supplier", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-        },
-      });
+      const response = await api.get("/supplier");
       setSuppliers(response.data.suppliers);
     } catch (error) {
       console.error("Error fetching suppliers:", error);
@@ -64,22 +60,10 @@ const Suppliers = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = editSupplier
-      ? `http://localhost:5175/api/supplier/${editSupplier}`
-      : "http://localhost:5175/api/supplier/add";
-
-    const method = editSupplier ? "put" : "post";
-
     try {
-      const response = await axios[method](
-        url,
-        { ...formData },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
-      );
+      const response = editSupplier 
+        ? await api.put(`/supplier/${editSupplier}`, { ...formData })
+        : await api.post("/supplier/add", { ...formData });
 
       if (response.data.success) {
         alert(
@@ -106,14 +90,7 @@ const Suppliers = () => {
     }
 
     try {
-      const response = await axios.delete(
-        `http://localhost:5175/api/supplier/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
-      );
+      const response = await api.delete(`/supplier/${id}`);
 
       if (response.data.success) {
         alert("Supplier deleted successfully");

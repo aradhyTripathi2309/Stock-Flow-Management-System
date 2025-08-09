@@ -1,8 +1,8 @@
 // src/components/CustomerProducts.jsx
 
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
+import api from "../utils/api";
 
 const CustomerProducts = () => {
   const [products, setProducts] = useState([]);
@@ -13,11 +13,7 @@ const CustomerProducts = () => {
   // Fetch all products
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:5175/api/product", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-        },
-      });
+      const res = await api.get("/product");
       const data = Array.isArray(res.data)
         ? res.data
         : res.data?.products || [];
@@ -30,11 +26,7 @@ const CustomerProducts = () => {
   // Fetch all categories
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5175/api/category", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-        },
-      });
+      const res = await api.get("/category");
       const data = Array.isArray(res.data)
         ? res.data
         : res.data?.categories || [];
@@ -60,7 +52,7 @@ const CustomerProducts = () => {
 
   const handleOrder = async (productId) => {
     try {
-      const res = await axios.post("/api/order", { productId });
+      const res = await api.post("/order", { productId });
       alert("Order placed successfully!");
     } catch (err) {
       console.error("Order failed:", err);

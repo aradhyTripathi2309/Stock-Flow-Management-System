@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useAuth } from "../context/AuthContext.jsx";
 import Swal from "sweetalert2";
+import api from "../utils/api";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -18,11 +18,7 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get("http://localhost:5175/api/user/profile", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-        },
-      });
+      const res = await api.get("/user/profile");
       setProfile(res.data.user);
       setEditData({ name: res.data.user.name, email: res.data.user.email });
     } catch (err) {
@@ -45,14 +41,9 @@ const Profile = () => {
 
   const saveProfileChanges = async () => {
     try {
-      const res = await axios.put(
-        "http://localhost:5175/api/user/profile",
-        { name: editData.name, email: editData.email },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
+      const res = await api.put(
+        "/user/profile",
+        { name: editData.name, email: editData.email }
       );
 
       if (res.data.success) {
@@ -80,15 +71,7 @@ const Profile = () => {
 
   const handleSendOtp = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:5175/api/user/send-otp",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
-      );
+      const res = await api.post("/user/send-otp", {});
       if (res.data.success) {
         setOtpStep(true);
         Swal.fire({
@@ -122,14 +105,9 @@ const Profile = () => {
     }
 
     try {
-      const res = await axios.post(
-        "http://localhost:5175/api/user/reset-password",
-        { otp: emailOtp, newPassword },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
+      const res = await api.post(
+        "/user/reset-password",
+        { otp: emailOtp, newPassword }
       );
       if (res.data.success) {
         Swal.fire({

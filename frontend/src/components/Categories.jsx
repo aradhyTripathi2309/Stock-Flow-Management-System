@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
+import api from "../utils/api";
 
 const Categories = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -13,11 +13,7 @@ const Categories = () => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5175/api/category", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-        },
-      });
+      const response = await api.get("/category");
       setCategories(response.data.categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -59,14 +55,7 @@ const Categories = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const response = await axios.delete(
-        `http://localhost:5175/api/category/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
-      );
+      const response = await api.delete(`/category/${id}`);
 
       if (response.data.success) {
         await Swal.fire({
@@ -108,21 +97,13 @@ const Categories = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = editCategory
-        ? `http://localhost:5175/api/category/${editCategory}`
-        : "http://localhost:5175/api/category/add";
+      const endpoint = editCategory
+        ? `/category/${editCategory}`
+        : "/category/add";
 
-      const method = editCategory ? "put" : "post";
-
-      const response = await axios[method](
-        url,
-        { categoryName, categoryDescription },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
-      );
+      const response = editCategory
+        ? await api.put(endpoint, { categoryName, categoryDescription })
+        : await api.post(endpoint, { categoryName, categoryDescription });
 
       if (response.data.success) {
         await Swal.fire({

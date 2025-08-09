@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext.jsx";
@@ -37,11 +36,7 @@ const Products = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5175/api/product", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-        },
-      });
+      const res = await api.get("/product");
       setProducts(res.data.products);
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -52,11 +47,7 @@ const Products = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5175/api/category", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-        },
-      });
+      const res = await api.get("/category");
       setCategories(res.data.categories);
     } catch (err) {
       console.error("Error fetching categories:", err);
@@ -82,17 +73,11 @@ const Products = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = editProduct
-      ? `http://localhost:5175/api/product/${editProduct}`
-      : "http://localhost:5175/api/product/add";
-    const method = editProduct ? "put" : "post";
-
+    
     try {
-      const res = await axios[method](url, formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-        },
-      });
+      const res = editProduct 
+        ? await api.put(`/product/${editProduct}`, formData)
+        : await api.post("/product/add", formData);
 
       if (res.data.success) {
         await Swal.fire({
@@ -138,14 +123,7 @@ const Products = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await axios.delete(
-        `http://localhost:5175/api/product/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
-      );
+      const res = await api.delete(`/product/${id}`);
 
       if (res.data.success) {
         await Swal.fire({

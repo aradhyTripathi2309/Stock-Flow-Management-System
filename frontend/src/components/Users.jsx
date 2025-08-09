@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -17,13 +17,8 @@ const Users = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:5175/api/user${roleFilter ? `?role=${roleFilter}` : ""}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
+      const response = await api.get(
+        `/user${roleFilter ? `?role=${roleFilter}` : ""}`
       );
       setUsers(response.data.users);
     } catch (error) {
@@ -41,14 +36,7 @@ const Users = () => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      const response = await axios.delete(
-        `http://localhost:5175/api/user/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-          },
-        }
-      );
+      const response = await api.delete(`/user/${id}`);
       if (response.data.success) {
         alert("User deleted successfully");
         fetchUsers();
@@ -91,18 +79,10 @@ const Users = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = editUserId
-      ? `http://localhost:5175/api/user/${editUserId}`
-      : "http://localhost:5175/api/user/";
-
-    const method = editUserId ? "put" : "post";
-
     try {
-      const response = await axios[method](url, formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
-        },
-      });
+      const response = editUserId
+        ? await api.put(`/user/${editUserId}`, formData)
+        : await api.post("/user/", formData);
 
       if (response.data.success) {
         alert(
