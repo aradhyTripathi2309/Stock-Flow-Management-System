@@ -31,7 +31,7 @@ const LogSign = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const endpoint = isLogin ? "/login" : "/register";
+    const endpoint = isLogin ? "/auth/login" : "/auth/register";
 
     try {
       const res = await api.post(endpoint, formData);
