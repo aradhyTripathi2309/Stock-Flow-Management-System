@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import api from "../utils/api";
 
 const AuthContext = createContext();
 
@@ -8,16 +9,11 @@ export const AuthProvider = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  // ✅ Automatically attach token to Axios headers
+  // ✅ Token is automatically handled by the api utility
   useEffect(() => {
-    const token = localStorage.getItem("pos-token");
-    if (token) {
-      import("axios").then((axios) => {
-        axios.default.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${token}`;
-      });
-    }
+    // The api utility automatically handles token from localStorage
+    // No need to manually set axios headers here
+    console.log("User state updated:", user);
   }, [user]);
 
   const login = (userData, token) => {

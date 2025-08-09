@@ -1,10 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
 import { createRoot } from "react-dom/client";
-import "./App.css"; // Ensure you have a CSS file for global styles
-
-
-
+import "./App.css";
 import AuthProvider from "./context/AuthContext.jsx";
 import App from "./App.jsx";
 
