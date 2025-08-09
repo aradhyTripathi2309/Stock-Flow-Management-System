@@ -1,10 +1,10 @@
 // components/LogSign.jsx
 import React, { useState } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useAuth } from "../context/AuthContext"; // ✅ Import auth context
+import { useAuth } from "../context/AuthContext";
+import api from "../utils/api"; // ✅ Use centralized API
 
 const LogSign = () => {
   const navigate = useNavigate();
@@ -31,10 +31,10 @@ const LogSign = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = isLogin ? "/api/auth/login" : "/api/auth/register";
+    const endpoint = isLogin ? "/auth/login" : "/auth/register";
 
     try {
-      const res = await axios.post(url, formData);
+      const res = await api.post(endpoint, formData);
 
       if (res.data.status) {
         // ✅ Store in context and localStorage
@@ -115,24 +115,42 @@ const LogSign = () => {
           >
             <motion.span
               className="inline-block"
-              animate={{ rotateY: [0, 360] }}
-              transition={{ duration: 2, delay: 1.5, ease: "easeInOut" }}
+              animate={{ 
+                textShadow: [
+                  "0 0 10px rgba(6, 182, 212, 0.8)",
+                  "0 0 20px rgba(6, 182, 212, 0.6)",
+                  "0 0 10px rgba(6, 182, 212, 0.8)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
               Stock Flow
             </motion.span>
             {' '}
             <motion.span
               className="inline-block"
-              animate={{ rotateY: [0, -360] }}
-              transition={{ duration: 2, delay: 2, ease: "easeInOut" }}
+              animate={{ 
+                textShadow: [
+                  "0 0 10px rgba(59, 130, 246, 0.8)",
+                  "0 0 20px rgba(59, 130, 246, 0.6)",
+                  "0 0 10px rgba(59, 130, 246, 0.8)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
             >
               Management
             </motion.span>
             {' '}
             <motion.span
               className="inline-block"
-              animate={{ rotateY: [0, 360] }}
-              transition={{ duration: 2, delay: 2.5, ease: "easeInOut" }}
+              animate={{ 
+                textShadow: [
+                  "0 0 10px rgba(147, 51, 234, 0.8)",
+                  "0 0 20px rgba(147, 51, 234, 0.6)",
+                  "0 0 10px rgba(147, 51, 234, 0.8)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
             >
               System
             </motion.span>

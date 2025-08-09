@@ -4,8 +4,11 @@ import Swal from 'sweetalert2';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://stock-flow-management-system.onrender.com/api',
-  timeout: 10000,
+  baseURL: 'https://stock-flow-management-system.onrender.com/api',
+  timeout: 15000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // Request interceptor to add auth token

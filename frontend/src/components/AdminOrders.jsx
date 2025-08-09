@@ -10,7 +10,7 @@ const AdminOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await api.get("/api/order");
+      const res = await api.get("/order");
       setOrders(res.data.orders);
     } catch (err) {
       console.error("Failed to fetch orders", err);
@@ -23,7 +23,7 @@ const AdminOrders = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await api.patch(`/api/order/${orderId}/status`, { status: newStatus });
+      await api.patch(`/order/${orderId}/status`, { status: newStatus });
 
       Swal.fire({
         icon: "success",

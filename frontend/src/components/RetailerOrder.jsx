@@ -16,7 +16,7 @@ const RetailerOrder = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await api.get("/api/product");
+        const res = await api.get("/product");
         setProducts(res.data.products || []);
       } catch (err) {
         console.error("Failed to fetch products", err);
@@ -75,7 +75,7 @@ const RetailerOrder = () => {
         products: validItems,
         notes,
       });
-      const res = await api.post("/api/order", {
+      const res = await api.post("/order", {
         products: validItems,
         notes,
       });
@@ -119,7 +119,7 @@ const RetailerOrder = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await api.get("/api/order/my");
+      const res = await api.get("/order/my");
       setOrders(res.data.orders || []);
     } catch (err) {
       console.error(
@@ -158,7 +158,7 @@ const RetailerOrder = () => {
 
     if (result.isConfirmed) {
       try {
-        await api.delete(`/api/order/${orderId}/cancel`);
+        await api.delete(`/order/${orderId}/cancel`);
 
         Swal.fire({
           icon: "success",

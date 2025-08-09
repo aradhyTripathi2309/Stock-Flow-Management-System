@@ -15,7 +15,7 @@ const CustomerPlaceOrder = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await api.get("/api/product");
+        const res = await api.get("/product");
         setProducts(res.data.products);
         setError("");
       } catch (err) {
@@ -57,7 +57,7 @@ const CustomerPlaceOrder = () => {
     }
 
     try {
-      await api.post("/api/order", {
+      await api.post("/order", {
         products: filtered,
         notes,
       });
