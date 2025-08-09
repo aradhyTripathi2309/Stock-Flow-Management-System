@@ -9,7 +9,6 @@ import productRoutes from "./routes/product.js";
 import userRoutes from "./routes/user.js";
 import orderRoutes from "./routes/order.js";
 
-
 dotenv.config();
 console.log("🔐 JWT_SECRET from .env:", process.env.JWT_SECRET);
 console.log("🌐 MONGO_URL from .env:", process.env.MONGO_URL);
@@ -31,7 +30,6 @@ app.use("/api/supplier", supplierRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/order", orderRoutes);
-
 
 // Connect to MongoDB
 mongoose

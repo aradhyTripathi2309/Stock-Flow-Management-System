@@ -85,11 +85,15 @@ cp .env.example .env
 ```
 
 **Environment Variables (.env)**
+
+For local development:
 ```env
 MONGO_URL=mongodb://localhost:27017/inventory
 JWT_SECRET=your_super_secret_jwt_key
 PORT=5175
 ```
+
+For production deployment, use your cloud MongoDB URL and ensure JWT_SECRET is secure.
 
 ### 3. Frontend Setup
 ```bash
@@ -121,9 +125,20 @@ cd frontend
 npm run dev
 ```
 
-The application will be available at:
+For local development, the application will be available at:
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:5175
+
+## Live Deployment
+
+The application is deployed and ready for use:
+- **Backend API**: https://stock-flow-management-system.onrender.com
+- **API Endpoints**: https://stock-flow-management-system.onrender.com/api
+
+To use the deployed backend with your local frontend, update your `frontend/.env` file:
+```env
+VITE_API_URL=https://stock-flow-management-system.onrender.com/api
+```
 
 ## Default Login Credentials
 
